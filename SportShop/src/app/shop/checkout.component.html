@@ -1,0 +1,54 @@
+<main class="container py-4">
+  <h1>Checkout</h1>
+
+  @if (orderSubmitted()) {
+    <div class="alert alert-success" role="status">
+      <h2 class="h5">Thank you for your order!</h2>
+      <p class="mb-0">Your order has been placed.</p>
+    </div>
+    <a class="btn btn-primary" routerLink="/shop">Return to Store</a>
+  } @else if (cart.itemCount() === 0) {
+    <p>Your cart is empty.</p>
+    <a class="btn btn-primary" routerLink="/shop">Return to Store</a>
+  } @else {
+    <form #form="ngForm" (ngSubmit)="submitOrder(form)">
+      <div class="row g-3">
+        @for (field of fields; track field.name) {
+          <div class="col-md-6">
+            <label class="form-label" [for]="field.name">{{ field.label }}</label>
+            <input
+              #control="ngModel"
+              type="text"
+              class="form-control"
+              [id]="field.name"
+              [name]="field.name"
+              [attr.autocomplete]="field.autocomplete"
+              [(ngModel)]="delivery[field.name]"
+              required
+              pattern=".*\S.*"
+              [class.is-invalid]="form.submitted && control.invalid"
+              [attr.aria-invalid]="form.submitted && control.invalid"
+              [attr.aria-describedby]="form.submitted && control.invalid ? field.name + '-error' : null"
+            />
+            @if (form.submitted && control.invalid) {
+              <div class="invalid-feedback" [id]="field.name + '-error'">
+                {{ field.label }} is required.
+              </div>
+            }
+          </div>
+        }
+      </div>
+
+      @if (submitError()) {
+        <div class="alert alert-danger mt-3" role="alert">{{ submitError() }}</div>
+      }
+
+      <div class="d-flex flex-wrap gap-2 mt-4">
+        <a class="btn btn-outline-primary" routerLink="/cart">Back to Cart</a>
+        <button type="submit" class="btn btn-primary" [disabled]="submitting()">
+          {{ submitting() ? 'Placing order…' : 'Complete Order' }}
+        </button>
+      </div>
+    </form>
+  }
+</main>
