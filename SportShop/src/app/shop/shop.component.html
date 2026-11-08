@@ -1,0 +1,71 @@
+<header class="bg-dark text-white p-3">
+  <span class="fw-bold">SportShop</span>
+</header>
+
+<main class="container py-4">
+  <h1>Product catalog</h1>
+
+  <div class="d-flex flex-wrap gap-2 mb-3" role="group" aria-label="Product categories">
+    <button
+      type="button"
+      class="btn btn-outline-primary"
+      [class.active]="selectedCategory() === undefined"
+      [attr.aria-pressed]="selectedCategory() === undefined"
+      (click)="selectCategory()"
+    >
+      All products
+    </button>
+
+    @for (category of categories; track category) {
+      <button
+        type="button"
+        class="btn btn-outline-primary"
+        [class.active]="selectedCategory() === category"
+        [attr.aria-pressed]="selectedCategory() === category"
+        (click)="selectCategory(category)"
+      >
+        {{ category }}
+      </button>
+    }
+  </div>
+
+  @for (product of products; track product.id) {
+    <article class="card mb-3">
+      <div class="card-body">
+        <h2 class="h5">{{ product.name }}</h2>
+        <p class="card-text">{{ product.description }}</p>
+        <span class="badge bg-primary">{{ product.price | currency: 'USD' }}</span>
+      </div>
+    </article>
+  }
+
+  <div class="d-flex flex-wrap align-items-center justify-content-between gap-3 mt-3">
+    <label class="d-flex align-items-center gap-2">
+      Products per page
+      <select
+        #pageSize
+        class="form-select w-auto"
+        [value]="productsPerPage()"
+        (change)="changePageSize(+pageSize.value)"
+      >
+        <option value="3">3</option>
+        <option value="4">4</option>
+        <option value="6">6</option>
+        <option value="8">8</option>
+      </select>
+    </label>
+
+    <nav class="btn-group" aria-label="Catalog pages">
+      <button
+        *appCounter="let page of pageCount"
+        type="button"
+        class="btn btn-outline-primary"
+        [class.active]="selectedPage() === page"
+        [attr.aria-current]="selectedPage() === page ? 'page' : null"
+        (click)="selectedPage.set(page)"
+      >
+        {{ page }}
+      </button>
+    </nav>
+  </div>
+</main>
