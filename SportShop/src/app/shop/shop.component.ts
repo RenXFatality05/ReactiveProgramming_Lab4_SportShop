@@ -10,7 +10,7 @@ import { CounterDirective } from './counter.directive';
   templateUrl: './shop.component.html',
 })
 export class ShopComponent {
-  private readonly repository = inject(ProductRepository);
+  protected readonly repository = inject(ProductRepository);
   protected readonly cart = inject(Cart);
   protected readonly selectedCategory = signal<string | undefined>(undefined);
   protected readonly selectedPage = signal(1);
