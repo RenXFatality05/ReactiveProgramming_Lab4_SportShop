@@ -1,0 +1,66 @@
+<main class="container py-4">
+  <h1>Your Cart</h1>
+
+  @if (cart.lines().length === 0) {
+    <p>Your cart is empty.</p>
+  } @else {
+    <div class="table-responsive">
+      <table class="table table-striped align-middle">
+        <thead>
+          <tr>
+            <th scope="col">Product</th>
+            <th scope="col">Quantity</th>
+            <th scope="col" class="text-end">Price</th>
+            <th scope="col" class="text-end">Subtotal</th>
+            <th scope="col" class="text-end">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (line of cart.lines(); track line.product.id) {
+            <tr>
+              <td>{{ line.product.name }}</td>
+              <td>
+                <input
+                  #quantityInput
+                  type="number"
+                  min="1"
+                  step="1"
+                  class="form-control form-control-sm"
+                  [value]="line.quantity"
+                  [attr.aria-label]="'Quantity for ' + line.product.name"
+                  (change)="changeQuantity(line, quantityInput)"
+                />
+              </td>
+              <td class="text-end">{{ line.product.price | currency: 'USD' }}</td>
+              <td class="text-end">{{ line.lineTotal | currency: 'USD' }}</td>
+              <td class="text-end">
+                <button
+                  type="button"
+                  class="btn btn-outline-danger btn-sm"
+                  [attr.aria-label]="'Remove ' + line.product.name"
+                  (click)="cart.removeLine(line.product.id!)"
+                >
+                  Remove
+                </button>
+              </td>
+            </tr>
+          }
+        </tbody>
+        <tfoot>
+          <tr>
+            <th scope="row" colspan="3" class="text-end">Total</th>
+            <td class="text-end fw-bold">{{ cart.cartPrice() | currency: 'USD' }}</td>
+            <td></td>
+          </tr>
+        </tfoot>
+      </table>
+    </div>
+  }
+
+  <div class="d-flex flex-wrap gap-2">
+    <a class="btn btn-outline-primary" routerLink="/shop">Continue Shopping</a>
+    <button type="button" class="btn btn-primary" routerLink="/checkout" [disabled]="cart.itemCount() === 0">
+      Checkout
+    </button>
+  </div>
+</main>

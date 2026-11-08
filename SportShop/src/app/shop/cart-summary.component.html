@@ -1,0 +1,3 @@
+<a class="btn btn-outline-light btn-sm" routerLink="/cart">
+  Cart <span aria-live="polite">({{ cart.itemCount() }}) · {{ cart.cartPrice() | currency: 'USD' }}</span>
+</a>

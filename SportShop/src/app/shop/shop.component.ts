@@ -1,5 +1,6 @@
 import { CurrencyPipe } from '@angular/common';
 import { Component, inject, signal } from '@angular/core';
+import { Cart } from '../model/cart.model';
 import { ProductRepository } from '../model/product.repository';
 import { CounterDirective } from './counter.directive';
 
@@ -10,6 +11,7 @@ import { CounterDirective } from './counter.directive';
 })
 export class ShopComponent {
   private readonly repository = inject(ProductRepository);
+  protected readonly cart = inject(Cart);
   protected readonly selectedCategory = signal<string | undefined>(undefined);
   protected readonly selectedPage = signal(1);
   protected readonly productsPerPage = signal(4);

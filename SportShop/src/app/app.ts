@@ -1,8 +1,9 @@
 import { Component } from '@angular/core';
-import { ShopComponent } from './shop/shop.component';
+import { RouterOutlet } from '@angular/router';
+import { CartSummaryComponent } from './shop/cart-summary.component';
 
 @Component({
-  imports: [ShopComponent],
+  imports: [RouterOutlet, CartSummaryComponent],
   selector: 'app-root',
   styleUrl: './app.css',
   templateUrl: './app.html',
